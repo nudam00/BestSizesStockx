@@ -1,6 +1,7 @@
 # Best Sizes Checker
-A program that writes the best sizes to an Excel file by comparing SKUs and prices from an Excel file to prices from StockX after commissions. Size is written out if the margin is more than 15% and if at least 20 units have been sold in the last 20 days.
-Each first time the program is turned on at intervals, it ends up blocked by PerimeterX, in which case the program must be restarted and PerimeterX resolved. If there are no sales for a particular size, manually select the next size.
+A program that writes the best sizes to an Excel file by comparing SKUs and prices from an Excel file to prices from StockX after commissions. Size is written out if the margin is more than 15% and if at least 20 units have been sold in the last 20 days.</b>
+Each first time the program is turned on at intervals, it ends up blocked by PerimeterX, in which case the program must be restarted and PerimeterX resolved. You also have to choose region and log in manually (PerimeterX is blocking).</b>
+If there are no sales for a particular size, manually select the next size. </b>
 Written in Python using Selenium.
 
 ## stockx.py

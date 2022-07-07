@@ -26,53 +26,59 @@ class Stockx:
     def region(self):
         # Chooses region
         self.driver.get("https://stockx.com/")
-        time.sleep(5)
+        print("Choose region and log in manually (PerimeterX is blocking horribly) and type anything...")
+        input()
+        # time.sleep(5)
 
-        while True:
-            try:
-                WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
-                    (By.XPATH, '//*[@role="dialog"]/footer/button')))
-                self.driver.find_element(
-                    "xpath", '/html/body/div[6]/div[4]/div/section/footer/button').click()
-                break
-            except Exception:
-                try:
-                    WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
-                        (By.XPATH, '//*[@role="dialog"]/footer/button')))
-                    self.driver.find_element(
-                        "xpath", '/html/body/div[5]/div[4]/div/section/footer/button').click()
-                    break
-                except Exception:
-                    captcha()
-                captcha()
-        time.sleep(4)
-        self.logging_in()
+        # while True:
+        #     try:
+        #         WebDriverWait(self.driver, 10).until(
+        #             EC.presence_of_element_located((By.XPATH, '//*[@role="dialog"]/footer/button')))
+        #         self.driver.find_element(
+        #             "xpath", '/html/body/div[6]/div[4]/div/section/footer/button').click()
+        #         break
+        #     except Exception as e:
+        #         try:
+        #             WebDriverWait(self.driver, 10).until(
+        #                 EC.presence_of_element_located((By.XPATH, '//*[@role="dialog"]/footer/button')))
+        #             self.driver.find_element(
+        #                 "xpath", '/html/body/div[5]/div[4]/div/section/footer/button').click()
+        #             break
+        #         except Exception:
+        #             captcha()
+        #         captcha()
+        # time.sleep(4)
 
-    def logging_in(self):
-        # Logs in
+        # # Accept cookies
+        # self.driver.find_element(
+        #     'xpath', '/html/body/div[5]/div[2]/div/div[1]/div/div[2]/div/button[3]').click()
+        # self.logging_in()
 
-        while True:
-            try:
-                self.driver.find_element(
-                    'xpath', '//*[@id="nav-login"]').click()
-                break
-            except Exception:
-                captcha()
-        self.driver.refresh()
+    # def logging_in(self):
+    #     # Logs in
 
-        while True:
-            try:
-                WebDriverWait(self.driver, 5).until(
-                    EC.presence_of_element_located((By.XPATH, '//*[@id="email-login"]')))
-                self.driver.find_element(
-                    'xpath', '//*[@id="email-login"]').send_keys(self.email)
-                time.sleep(0.5)
-                self.driver.find_element(
-                    'xpath', '//*[@id="password-login"]').send_keys(self.password)
-                time.sleep(2)
-                break
-            except Exception:
-                captcha()
+    #     while True:
+    #         try:
+    #             self.driver.find_element("xpath",
+    #                                      '//*[@id="nav-login"]').click()
+    #             break
+    #         except Exception:
+    #             captcha()
+    #     self.driver.refresh()
+
+    #     while True:
+    #         try:
+    #             WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((
+    #                 By.XPATH, '//*[@id="email-login"]')))
+    #             self.driver.find_element("xpath",
+    #                                      '//*[@id="email-login"]').send_keys(self.email)
+    #             time.sleep(0.5)
+    #             self.driver.find_element("xpath",
+    #                                      '//*[@id="password-login"]').send_keys(self.password)
+    #             time.sleep(2)
+    #             break
+    #         except Exception:
+    #             captcha()
 
     def product_link(self):
         # Finds product link
@@ -140,9 +146,9 @@ class Stockx:
                         'xpath', '//div[@class="css-1o6kz7w"]/button[{}]'.format(s)).click()
 
                     WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(
-                        (By.XPATH, '//*[@class="css-3f2gt7"]/button[3]')))
+                        (By.XPATH, '//*[@class="css-1yjnujv"]/li[3]')))
                     self.driver.find_element(
-                        'xpath', '//*[@class="css-3f2gt7"]/button[3]').click()
+                        'xpath', '//*[@class="css-1yjnujv"]/li[3]').click()
 
                     staleElement = True
                     date1 = 0
@@ -207,14 +213,17 @@ class Stockx:
                     # Lowest ask
                     try:
                         price = int(
-                            self.driver.find_element('xpath', '//div[2]/div/a[2]/p[@class="chakra-text css-qhbnuv"]').get_attribute("innerText").replace('Buy for £', ''))
+                            self.driver.find_element("xpath", '//div[2]/div/a[2]/p[@class="chakra-text css-qhbnuv"]'
+                                                     ).get_attribute("innerText").replace('Buy for £', ''))
                         price1 = (price - (price * 0.03) -
                                   (price * 0.07)) * self.rate_gbp
                         price1 = self.priceRounding(price1)
                         percent = (price1 - self.value) / self.value
                     except Exception:
-                        price = int(self.driver.find_element(
-                            'xpath', '//div[2]/div[1]/div[2]/div[1]/div/dl/dd[@class="chakra-stat__number css-1brf3jx"]').get_attribute("innerText").replace('£', ''))
+                        price = int(self.driver.find_element("xpath", '//div[2]/div[1]/div[2]/div[1]/div/dl/dd['
+                                                                      '@class="chakra-stat__number '
+                                                                      'css-1brf3jx"]').get_attribute(
+                            "innerText").replace('£', ''))
                         price1 = (price - (price * 0.03) -
                                   (price * 0.07)) * self.rate_gbp
                         price1 = self.priceRounding(price1)
@@ -238,8 +247,7 @@ class Stockx:
                         sizes += (size + ", ")
                         continue
 
-                except Exception as e:
-                    print(e)
+                except Exception:
                     continue
             except Exception as e:
                 print(e)
