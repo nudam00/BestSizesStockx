@@ -63,8 +63,8 @@ def main():
           '6. Enter the name of the current month (first 3 letters, starting with a capital letter)\n'
           '\n'
           'shoes.xlsx, in each row:\n'
-          '1. Type SKU\n'
-          '2. Put the price\n'
+          '1. Write SKUs\n'
+          '2. Write prices\n'
           '\n'
           'Write anything if you wish to start')
     input()

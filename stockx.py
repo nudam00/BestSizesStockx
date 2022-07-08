@@ -26,6 +26,7 @@ class Stockx:
     def region(self):
         # Chooses region
         self.driver.get("https://stockx.com/")
+        time.sleep(1)
         print("Choose region and log in manually (PerimeterX is blocking horribly) and type anything...")
         input()
         # time.sleep(5)
