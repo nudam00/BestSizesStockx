@@ -107,6 +107,19 @@ class Stockx:
         else:
             return round(price, -1)
 
+    def __closeLastSales(self):
+        # Closes last sales list
+        while True:
+            try:
+                WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(
+                    (By.XPATH, '//*[@class="chakra-modal__close-btn css-1iqbypn"]')))
+                self.driver.find_element(
+                    'xpath', '//*[@class="chakra-modal__close-btn css-1iqbypn"]').click()
+                break
+            except Exception:
+                self.driver.refresh()
+                break
+
     def item_info(self):
         # Gets product name, sku and sizes
 
@@ -157,6 +170,15 @@ class Stockx:
                     count = 0
                     size = ""
 
+                    try:
+                        text = self.driver.find_element(
+                            'xpath', '/html/body/div[9]/div/div/div[3]/div/div/div/div/table/tbody/p/div/p[2]').get_attribute('innterText')
+                        if text == "No data available.":
+                            self.__closeLastSales()
+                            continue
+                    except Exception:
+                        pass
+
                     # Checks last 20 purchases, saves last date
                     time.sleep(0.5)
                     while staleElement:
@@ -179,16 +201,7 @@ class Stockx:
                                 staleElement = False
 
                     # Closes last sales
-                    while True:
-                        try:
-                            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(
-                                (By.XPATH, '//*[@class="chakra-modal__close-btn css-1iqbypn"]')))
-                            self.driver.find_element(
-                                'xpath', '//*[@class="chakra-modal__close-btn css-1iqbypn"]').click()
-                            break
-                        except Exception:
-                            self.driver.refresh()
-                            break
+                    self.__closeLastSales()
 
                     # Highest bid
                     try:
